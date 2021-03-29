@@ -41,6 +41,7 @@ homebrew_installed_packages:
   - openssl
   - pv
   - wget
+  - atom
 
 homebrew_taps:
   - homebrew/core
