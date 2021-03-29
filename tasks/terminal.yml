@@ -6,16 +6,28 @@
   changed_when: false
   check_mode: false
 
-- name: Ensure custom Terminal profile is added.
-  command: open files/terminal/JJG-Term.terminal
-  changed_when: false
-  when: "'JJG-Term' not in terminal_theme.stdout"
+# - name: Ensure custom Terminal profile is added.
+#   command: open files/terminal/JJG-Term.terminal
+#   changed_when: false
+#   when: "'JJG-Term' not in terminal_theme.stdout"
 
 # TODO: This doesn't work in Yosemite. Consider a different solution?
 - name: Ensure custom Terminal profile is set as default.
   command: "{{ item }}"
   with_items:
-    - defaults write com.apple.terminal 'Default Window Settings' -string JJG-Term
-    - defaults write com.apple.terminal 'Startup Window Settings' -string JJG-Term
+    - defaults write com.apple.terminal 'Default Window Settings' -string Novel
+    - defaults write com.apple.terminal 'Startup Window Settings' -string Novel
   changed_when: false
-  when: "'JJG-Term' not in terminal_theme.stdout"
+  when: "'Novel' not in terminal_theme.stdout"
+
+# Secure Keyboard Entry
+- name: Get current Terminal Secure Keyboard Entry value.
+  command: defaults read com.apple.terminal SecureKeyboardEntry
+  register: terminal_securekeyboardentry
+  changed_when: false
+  check_mode: false
+
+- name: Ensure Terminal Secure Keyboard Entry is set.
+  command: defaults write com.apple.Terminal.plist SecureKeyboardEntry 1
+  changed_when: false
+  when: "'1' not in terminal_securekeyboardentry.stdout"
